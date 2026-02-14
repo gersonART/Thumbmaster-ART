@@ -17,8 +17,9 @@ export interface ThumbnailResult {
   textY: number;
   textX: number;
   textRotation: number;
-  presenterX: number; // 0-100
-  presenterY: number; // 0-100
+  presenterX: number; // 0-100 (Offset X do re-enquadramento)
+  presenterY: number; // 0-100 (Offset Y do re-enquadramento)
+  presenterZoom: number; // 1.0 - 2.0 (Zoom do re-enquadramento)
   framing: string;
   suggestion: string;
   isRefining: boolean;

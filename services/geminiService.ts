@@ -2,7 +2,10 @@
 import { GoogleGenAI } from "@google/genai";
 import { ThumbnailData, ThumbnailResult } from "../types";
 
+const MODEL_NAME = 'gemini-3-pro-image-preview';
+
 export const generateThumbnailImage = async (data: ThumbnailData, variationIndex: number = 0): Promise<string> => {
+  // Always create a new instance right before the call to pick up the latest injected API key
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
   
   const variations = [
@@ -11,19 +14,27 @@ export const generateThumbnailImage = async (data: ThumbnailData, variationIndex
     "Hyper-vibrant studio glows, cinematic fog, rich saturated lighting, professional rim lighting with high specular highlights."
   ];
 
+  const horizontalPositions = ['82%', '88%', '78%'];
+  const posH = horizontalPositions[variationIndex];
+
   const prompt = `
-    Create a world-class, hyper-realistic professional YouTube thumbnail background.
+    Create a world-class, hyper-realistic professional YouTube thumbnail.
     VISUAL STYLE: ${variations[variationIndex]}
     
     MAIN SUBJECT: High-fidelity reconstruction of the person from the reference image.
-    FRAMING: ${data.framing}.
-    SUBJECT POSITION: Place the presenter at horizontal position ${variationIndex === 0 ? '75%' : (variationIndex === 1 ? '85%' : '65%')} and vertical center.
+    FACIAL EXPRESSION (CRITICAL): Modify the person's face to clearly show the emotion: "${data.emotion}". 
+    The expression should be high-energy and viral-style (e.g., exaggerated eyes and mouth if shocked, intense focus if serious).
     
-    CINEMATIC LIGHTING (CRITICAL):
-    - Massive, intense "${data.accentColor}" RIM LIGHTING (backlight) creating a sharp, glowing silhouette.
+    FRAMING: ${data.framing}.
+    SUBJECT POSITION: Place the presenter at horizontal position ${posH} (strictly on the RIGHT side of the frame) and vertical center. 
+    Ensure the presenter is NOT centered; they MUST be pushed towards the right edge to leave 60% of the left side clear for text.
+    
+    CINEMATIC LIGHTING & ATMOSPHERE (CRITICAL):
+    - Massive, intense "${data.accentColor}" RIM LIGHTING (backlight) creating a sharp, glowing silhouette on the subject.
+    - ENVIRONMENT TINT: The entire background and ambient atmosphere (fog, smoke, details) MUST be heavily tinted and illuminated with the "${data.accentColor}" color.
+    - The scene should feel immersed in a "${data.accentColor}" light bath.
     - Professional 3-point studio lighting with deep cinematic shadows.
-    - Volumetric atmosphere: add subtle smoke, dust particles, and "${data.accentColor}" tinted fog for depth.
-    - Dramatic high-key highlights on skin and hair textures.
+    - Volumetric atmosphere: add subtle smoke, dust particles, and thick "${data.accentColor}" tinted fog for depth.
     
     SCENE ENVIRONMENT: ${data.theme}.
     
@@ -36,7 +47,7 @@ export const generateThumbnailImage = async (data: ThumbnailData, variationIndex
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash-image',
+      model: MODEL_NAME,
       contents: {
         parts: [
           {
@@ -48,7 +59,12 @@ export const generateThumbnailImage = async (data: ThumbnailData, variationIndex
           { text: prompt }
         ],
       },
-      config: { imageConfig: { aspectRatio: "16:9" } },
+      config: { 
+        imageConfig: { 
+          aspectRatio: "16:9",
+          imageSize: "1K" 
+        } 
+      },
     });
 
     for (const part of response.candidates?.[0]?.content?.parts || []) {
@@ -67,19 +83,22 @@ export const refineThumbnailImage = async (result: ThumbnailResult, accentColor:
   const prompt = `
     Refine and improve this professional thumbnail based on this suggestion: "${result.suggestion || 'Enhance cinematic quality'}".
     
-    KEEP CURRENT CHARACTER: Maintain the exact same person, expression, and "${accentColor}" lighting theme.
+    POSITIONING ADJUSTMENT: The user has adjusted the framing. Please ensure the presenter is positioned correctly according to the current image composition, making sure they are well-placed on the RIGHT side.
+    
+    KEEP CURRENT CHARACTER AND EXPRESSION: Maintain the exact same person and their current facial expression.
+    COLOR THEME (CRITICAL): Intensely apply the "${accentColor}" lighting theme to both the subject AND the background environment. Ensure the entire scene is bathed in this color.
+    
     QUALITY UPGRADE:
     - Increase contrast and cinematic sharpness.
-    - Make the "${accentColor}" rim light even more intense and dramatic.
+    - Make the "${accentColor}" rim light and background glow even more intense and dramatic.
     - Enhance volumetric fog and background depth.
-    - Ensure the character positioning is optimized for impact.
     
     STRICT: NO text, UI elements, or watermarks in the image.
   `.trim();
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash-image',
+      model: MODEL_NAME,
       contents: {
         parts: [
           {
@@ -91,7 +110,12 @@ export const refineThumbnailImage = async (result: ThumbnailResult, accentColor:
           { text: prompt }
         ],
       },
-      config: { imageConfig: { aspectRatio: "16:9" } },
+      config: { 
+        imageConfig: { 
+          aspectRatio: "16:9",
+          imageSize: "1K" 
+        } 
+      },
     });
 
     for (const part of response.candidates?.[0]?.content?.parts || []) {
