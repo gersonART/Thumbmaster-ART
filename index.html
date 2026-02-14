@@ -30,7 +30,6 @@
             animation: float 3s ease-in-out infinite;
         }
         .thumbnail-text-shadow {
-            /* Sombra base escalonável via CSS variable ou inline style no React */
             filter: drop-shadow(0 4px 10px rgba(0,0,0,0.8));
         }
         .progress-bar-fill {
@@ -40,16 +39,20 @@
 <script type="importmap">
 {
   "imports": {
-    "@google/genai": "https://esm.sh/@google/genai@^1.41.0",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
     "react/": "https://esm.sh/react@^19.2.4/",
     "react": "https://esm.sh/react@^19.2.4",
-    "jszip": "https://esm.sh/jszip@3.10.1"
+    "@google/genai": "https://esm.sh/@google/genai@^1.41.0",
+    "vite": "https://esm.sh/vite@^7.3.1",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.4",
+    "jszip": "https://esm.sh/jszip@^3.10.1"
   }
 }
 </script>
 </head>
 <body>
     <div id="root"></div>
+    <!-- Ponto de entrada para o Vite -->
+    <script type="module" src="/index.tsx"></script>
 </body>
 </html>
