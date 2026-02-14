@@ -1,0 +1,7 @@
+{
+  "name": "Thumbmaster ART",
+  "description": "Gerador de thumbnails para YouTube que utiliza IA para criar artes virais baseadas na foto do apresentador e tema do vídeo.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
