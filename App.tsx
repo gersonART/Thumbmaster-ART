@@ -30,15 +30,6 @@ const PRESET_COLORS = [
   { name: 'Ciano', value: '#00FFFF' }
 ];
 
-// Logo oficial baseado na imagem anexada (Silhueta do touro)
-const LogoIcon = ({ className }: { className?: string }) => (
-  <div className={`${className} flex items-center justify-center overflow-hidden rounded-full bg-white`}>
-    <svg viewBox="0 0 100 100" fill="black" className="w-[85%] h-[85%]">
-       <path d="M78.5,49.2c-5.1-4.1-13.6-5.8-22.1-4.2c-3.1-6.4-7.5-12.8-13.6-16.1c-0.8-0.4-2.1,0.4-1.7,1.3c2.4,5,3.6,10.1,3.8,14.6 c-2.9,0.5-5.6,1.4-7.6,2.6c-4.4,2.5-7.6,6.3-8.8,10.6c-0.4,1.4,0.1,2.9,1.4,3.7c3.1,1.9,6.5,3.1,9.8,3.5c1.4,3.5,2,8.8,1.3,15.1 c-0.1,1.1,1.1,1.8,2,1.2c5.6-3.8,9.7-8.3,12.5-12.8c5,0.7,10.3,0.3,15.6-1.5c1.4-0.5,2.1-1.9,1.7-3.3 C81.8,51.8,80.5,50.8,78.5,49.2z" />
-    </svg>
-  </div>
-);
-
 interface ThumbnailEditorProps {
   result: ThumbnailResult;
   accentColor: string;
@@ -323,17 +314,13 @@ const App: React.FC = () => {
   const renderStep = () => {
     switch (step) {
       case 0: return (
-        <div className="flex flex-col items-center text-center space-y-12 py-16 animate-in fade-in zoom-in duration-500">
-          <div className="w-32 h-32 bg-zinc-900 rounded-[3rem] flex items-center justify-center float-animation border border-zinc-800 shadow-2xl shadow-blue-500/10 ring-1 ring-white/5">
-            <LogoIcon className="w-20 h-20" />
-          </div>
+        <div className="flex flex-col items-center text-center space-y-12 py-32 animate-in fade-in zoom-in duration-500">
           <div className="space-y-4">
-            <h1 className="text-7xl md:text-9xl font-bebas uppercase leading-none tracking-tight">Thumbmaster <span className="text-blue-600">ART</span></h1>
-            <p className="text-zinc-400 max-w-lg text-xl font-medium mx-auto px-4">
-              Crie miniaturas de alto impacto com iluminação de estúdio profissional em segundos.
+            <p className="text-zinc-400 max-w-lg text-2xl font-medium mx-auto px-4 leading-relaxed">
+              Crie artes virais de alto impacto com iluminação profissional em segundos.
             </p>
           </div>
-          <Button size="lg" onClick={handleNext} className="h-20 px-16 text-2xl uppercase font-bebas tracking-widest shadow-blue-600/20 shadow-2xl">Iniciar Estúdio</Button>
+          <Button size="lg" onClick={handleNext} className="h-20 px-20 text-2xl uppercase font-bebas tracking-widest shadow-blue-600/20 shadow-2xl rounded-full">Iniciar Estúdio</Button>
         </div>
       );
 
@@ -468,14 +455,9 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col px-6 md:px-12 lg:px-20 max-w-[1800px] mx-auto selection:bg-blue-600 selection:text-white">
       <header className="py-12 flex justify-between items-center border-b border-zinc-800/20">
-        <div className="flex items-center space-x-6 cursor-pointer group" onClick={reset}>
-          <div className="w-16 h-16 bg-zinc-900 rounded-3xl flex items-center justify-center border border-zinc-800 shadow-2xl transition-all group-hover:scale-110 group-hover:border-blue-500/50">
-            <LogoIcon className="w-12 h-12" />
-          </div>
-          <div>
-            <span className="font-bebas text-4xl md:text-6xl uppercase block leading-none tracking-tight">Thumbmaster <span className="text-blue-600">ART</span></span>
-            <span className="text-[10px] font-black text-blue-500/40 uppercase tracking-[0.8em] block mt-2">Professional AI Studio</span>
-          </div>
+        <div className="flex flex-col cursor-pointer group" onClick={reset}>
+          <span className="font-bebas text-4xl md:text-6xl uppercase block leading-none tracking-tight">Thumbmaster <span className="text-blue-600">ART</span></span>
+          <span className="text-[10px] font-black text-blue-500/40 uppercase tracking-[0.8em] block mt-2">Professional AI Studio</span>
         </div>
         <div className="hidden md:flex flex-col items-end space-y-2">
           <div className="flex items-center space-x-4">
